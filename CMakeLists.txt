@@ -11,7 +11,12 @@ find_package(SDL3 REQUIRED)
 
 add_executable(${PROJECT_NAME})
 target_sources(${PROJECT_NAME}
-    PRIVATE main.cpp
+    PRIVATE src/main.cpp
+    PRIVATE src/Application.cpp
+)
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE include
 )
 
 # include found SDL3 library
