@@ -2,6 +2,24 @@
 
 #include <iostream>
 
+void CalcUI::AddToDisplayText(const char c) {
+    if (displayText_ == "0" && c != '.')
+        displayText_.pop_back();
+
+    displayText_.push_back(c);
+}
+
+void CalcUI::PopFromDisplayText() {
+    displayText_.pop_back();
+
+    if (displayText_.size() == 0)
+        displayText_ = "0";
+}
+
+bool CalcUI::HasDisplayTextDot() {
+    return displayText_.find('.') != std::string::npos;
+}
+
 void CalcUI::Prepare(ImGuiIO &io) {
     ImGui::SetNextWindowPos(pos_);
     ImGui::SetNextWindowSize(ImVec2(io.DisplaySize.x, io.DisplaySize.y));
@@ -18,40 +36,42 @@ void CalcUI::Prepare(ImGuiIO &io) {
     // numeric buttons
     ImGui::BeginGroup();
     if (ImGui::Button("7", numButtonSize_))
-        std::cout << "Clicked 7" << std::endl;
+        AddToDisplayText('7');
     ImGui::SameLine();
     if (ImGui::Button("8", numButtonSize_))
-        std::cout << "Clicked 8" << std::endl;
+        AddToDisplayText('8');
     ImGui::SameLine();
     if (ImGui::Button("9", numButtonSize_))
-        std::cout << "Clicked 9" << std::endl;
+        AddToDisplayText('9');
 
     if (ImGui::Button("4", numButtonSize_))
-        std::cout << "Clicked 4" << std::endl;
+        AddToDisplayText('4');
     ImGui::SameLine();
     if (ImGui::Button("5", numButtonSize_))
-        std::cout << "Clicked 5" << std::endl;
+        AddToDisplayText('5');
     ImGui::SameLine();
     if (ImGui::Button("6", numButtonSize_))
-        std::cout << "Clicked 6" << std::endl;
+        AddToDisplayText('6');
 
     if (ImGui::Button("1", numButtonSize_))
-        std::cout << "Clicked 1" << std::endl;
+        AddToDisplayText('1');
     ImGui::SameLine();
     if (ImGui::Button("2", numButtonSize_))
-        std::cout << "Clicked 2" << std::endl;
+        AddToDisplayText('2');
     ImGui::SameLine();
     if (ImGui::Button("3", numButtonSize_))
-        std::cout << "Clicked 3" << std::endl;
+        AddToDisplayText('3');
 
     if (ImGui::Button("C", numButtonSize_))
-        std::cout << "Clicked C" << std::endl;
+        PopFromDisplayText();
     ImGui::SameLine();
     if (ImGui::Button("0", numButtonSize_))
-        std::cout << "Clicked 0" << std::endl;
+        AddToDisplayText('0');
     ImGui::SameLine();
-    if (ImGui::Button(".", numButtonSize_))
-        std::cout << "Clicked ." << std::endl;
+    if (ImGui::Button(".", numButtonSize_)){
+        if (!HasDisplayTextDot())
+            AddToDisplayText('.');
+    }
     ImGui::EndGroup();
 
     ImGui::SameLine();

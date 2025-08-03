@@ -9,6 +9,10 @@ public:
     void Prepare(ImGuiIO &io);
 
 private:
+    void AddToDisplayText(const char c);
+    void PopFromDisplayText();
+    bool HasDisplayTextDot();
+
     const std::string id_ = "CalcUI";
     const ImVec2 numButtonSize_ = ImVec2(32.0f, 32.0f);
     const ImVec2 optButtonSize_ = ImVec2(25.0f, 25.0f);
