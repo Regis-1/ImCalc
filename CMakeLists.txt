@@ -13,6 +13,7 @@ add_executable(${PROJECT_NAME})
 target_sources(${PROJECT_NAME}
     PRIVATE src/main.cpp
     PRIVATE src/Application.cpp
+    PRIVATE src/CalcUI.cpp
 )
 
 target_include_directories(${PROJECT_NAME}

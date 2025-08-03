@@ -13,20 +13,20 @@ public:
     static std::unique_ptr<Application> New();
     ~Application();
 
-    const SDL_WindowID getWindowID();
-    SDL_Window* getWindow();
-    SDL_Renderer* getRenderer();
+    void Run();
 
 private:
     Application() {};
-    bool initializeSDLWindow();
-    void initializeImGui();
+    bool InitializeSDLWindow();
+    void InitializeImGui();
+    bool ProcessEvents(SDL_Event &e, const SDL_WindowID &wID);
 
-    const unsigned int windowHeight_ = 400;
-    const unsigned int windowWidth_ = 300;
+    const unsigned int windowHeight_ = 210;
+    const unsigned int windowWidth_ = 160;
     const char *windowTitle_ = "ImCalc";
     SDL_Window *window_ = nullptr;
     SDL_WindowFlags windowFlags_ = 0;
     SDL_Renderer *renderer_ = nullptr;
     float mainScale_ = 0.0f;
+    ImGuiIO io_;
 };
