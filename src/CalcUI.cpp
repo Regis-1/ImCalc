@@ -2,10 +2,6 @@
 
 #include <iostream>
 
-CalcUI::CalcUI() {
-    calcRegisters_.reserve(2);
-}
-
 void CalcUI::AddToDisplayText(const char c) {
     if (shouldClear_) {
         displayText_ = "0";
@@ -29,7 +25,14 @@ bool CalcUI::HasDisplayTextDot() {
     return displayText_.find('.') != std::string::npos;
 }
 
-void CalcUI::ProcessOperation(const std::function<float(float, float)> &op, const bool finalize) {
+void CalcUI::SetOperation(Operation op) {
+    currOp_ = std::make_unique<Operation>(op);
+}
+
+void CalcUI::ProcessOperation() {
+    if (currOp_ == nullptr)
+        return;
+
     float tmp;
 
     try {
@@ -44,16 +47,13 @@ void CalcUI::ProcessOperation(const std::function<float(float, float)> &op, cons
         return;
     }
 
-    if (calcRegisters_.size() == 0) {
-        calcRegisters_.push_back(tmp);
+    if (!result_.has_value()) {
+        result_ = tmp;
     }
     else {
-        calcRegisters_[0] = op(calcRegisters_[0], tmp);
-        displayText_ = std::to_string(calcRegisters_[0]);
+        result_ = (*currOp_)(result_.value(), tmp);
+        displayText_ = std::to_string(result_.value());
     }
-
-    if (finalize)
-        calcRegisters_.clear();
 
     shouldClear_ = true;
 }
@@ -128,11 +128,14 @@ void CalcUI::Prepare(ImGuiIO &io) {
         std::cout << "Clicked -" << std::endl;
     if (ImGui::Button("+", optButtonSize_)) {
         std::cout << "Clicked +" << std::endl;
-        ProcessOperation(AddFloats);
+        SetOperation(AddFloats);
+        ProcessOperation();
     }
     if (ImGui::Button("=", optButtonSize_)) {
         std::cout << "Clicked =" << std::endl;
-        ProcessOperation(AddFloats, true);
+        ProcessOperation();
+        result_.reset();
+        currOp_.reset();
     }
     ImGui::EndGroup();
 

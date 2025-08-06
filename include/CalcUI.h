@@ -3,20 +3,24 @@
 #include "imgui.h"
 
 #include <string>
-#include <vector>
+#include <memory>
+#include <optional>
 #include <functional>
+
+using Operation = std::function<float(float, float)>;
+using OperationPtr = std::unique_ptr<Operation>;
 
 class CalcUI {
 public:
-    CalcUI();
     void Prepare(ImGuiIO &io);
-
-    void ProcessOperation(const std::function<float(float, float)> &op, const bool finalize = false);
 
 private:
     void AddToDisplayText(const char c);
     void PopFromDisplayText();
     bool HasDisplayTextDot();
+
+    void SetOperation(Operation op); 
+    void ProcessOperation();
 
     const std::string id_ = "CalcUI";
     const ImVec2 numButtonSize_ = ImVec2(32.0f, 32.0f);
@@ -26,6 +30,7 @@ private:
         ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 
     std::string displayText_ = "0";
-    std::vector<float> calcRegisters_;
+    std::optional<float> result_ = {};
+    OperationPtr currOp_;
     bool shouldClear_ = false;
 };
