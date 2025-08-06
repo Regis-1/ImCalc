@@ -3,10 +3,15 @@
 #include "imgui.h"
 
 #include <string>
+#include <vector>
+#include <functional>
 
 class CalcUI {
 public:
+    CalcUI();
     void Prepare(ImGuiIO &io);
+
+    void ProcessOperation(const std::function<float(float, float)> &op, const bool finalize = false);
 
 private:
     void AddToDisplayText(const char c);
@@ -21,4 +26,6 @@ private:
         ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 
     std::string displayText_ = "0";
+    std::vector<float> calcRegisters_;
+    bool shouldClear_ = false;
 };

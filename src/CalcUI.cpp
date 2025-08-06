@@ -2,7 +2,16 @@
 
 #include <iostream>
 
+CalcUI::CalcUI() {
+    calcRegisters_.reserve(2);
+}
+
 void CalcUI::AddToDisplayText(const char c) {
+    if (shouldClear_) {
+        displayText_ = "0";
+        shouldClear_ = false;
+    }
+
     if (displayText_ == "0" && c != '.')
         displayText_.pop_back();
 
@@ -18,6 +27,39 @@ void CalcUI::PopFromDisplayText() {
 
 bool CalcUI::HasDisplayTextDot() {
     return displayText_.find('.') != std::string::npos;
+}
+
+void CalcUI::ProcessOperation(const std::function<float(float, float)> &op, const bool finalize) {
+    float tmp;
+
+    try {
+        tmp = std::stof(displayText_);
+    }
+    catch (const std::invalid_argument &e) {
+        std::cerr << "Error: Invalid argument while processing an operation." << std::endl;
+        return;
+    }
+    catch (const std::out_of_range &e) {
+        std::cerr << "Error: Given argument exceeded range of the data type." << std::endl;
+        return;
+    }
+
+    if (calcRegisters_.size() == 0) {
+        calcRegisters_.push_back(tmp);
+    }
+    else {
+        calcRegisters_[0] = op(calcRegisters_[0], tmp);
+        displayText_ = std::to_string(calcRegisters_[0]);
+    }
+
+    if (finalize)
+        calcRegisters_.clear();
+
+    shouldClear_ = true;
+}
+
+float AddFloats(float x, float y) {
+    return x + y;
 }
 
 void CalcUI::Prepare(ImGuiIO &io) {
@@ -84,10 +126,14 @@ void CalcUI::Prepare(ImGuiIO &io) {
         std::cout << "Clicked *" << std::endl;
     if (ImGui::Button("-", optButtonSize_))
         std::cout << "Clicked -" << std::endl;
-    if (ImGui::Button("+", optButtonSize_))
+    if (ImGui::Button("+", optButtonSize_)) {
         std::cout << "Clicked +" << std::endl;
-    if (ImGui::Button("=", optButtonSize_))
+        ProcessOperation(AddFloats);
+    }
+    if (ImGui::Button("=", optButtonSize_)) {
         std::cout << "Clicked =" << std::endl;
+        ProcessOperation(AddFloats, true);
+    }
     ImGui::EndGroup();
 
     ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
