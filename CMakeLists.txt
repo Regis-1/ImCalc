@@ -14,6 +14,7 @@ target_sources(${PROJECT_NAME}
     PRIVATE src/main.cpp
     PRIVATE src/Application.cpp
     PRIVATE src/CalcUI.cpp
+    PRIVATE src/CalcEngine.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
