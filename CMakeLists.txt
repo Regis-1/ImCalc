@@ -4,6 +4,7 @@ project(
     imcalc
     DESCRIPTION "Simple, customizable calculator"
     LANGUAGES CXX
+    VERSION 0.1
 )
 
 # find installed SDL3 library
