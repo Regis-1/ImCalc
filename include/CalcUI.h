@@ -24,5 +24,8 @@ private:
         ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
     const std::string id_ = "CalcUI";
     std::string displayText_ = "0";
+    const float holdThreshold_ = 0.3f;
+    float holdDuration_ = 0.0f;
+    bool isHolding_ = false;
     bool shouldClear_ = false;
 };

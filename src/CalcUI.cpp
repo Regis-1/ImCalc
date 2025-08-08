@@ -73,8 +73,22 @@ void CalcUI::Prepare(ImGuiIO &io) {
     if (ImGui::Button("3", numButtonSize_))
         AddToDisplayText('3');
 
-    if (ImGui::Button("C", numButtonSize_))
-        PopFromDisplayText();
+    ImGui::Button("C", numButtonSize_);
+    if (ImGui::IsItemActive()) {
+        holdDuration_ += ImGui::GetIO().DeltaTime;
+        if (holdDuration_ >= holdThreshold_ && !isHolding_)
+            isHolding_ = true;
+    }
+    else {
+        if (ImGui::IsItemDeactivated() && !isHolding_)
+            PopFromDisplayText();
+        else if(ImGui::IsItemDeactivated() && isHolding_)
+            displayText_ = "0";
+
+        isHolding_ = false;
+        holdDuration_ = 0.0f;
+    }
+
     ImGui::SameLine();
     if (ImGui::Button("0", numButtonSize_))
         AddToDisplayText('0');
