@@ -25,6 +25,8 @@ using OperationPtr = std::unique_ptr<Operation>;
 
 class CalcEngine {
 public:
+    CalcEngine();
+
     void SetOperation(Operation op); 
     void Process(std::string &display);
     void Reset();

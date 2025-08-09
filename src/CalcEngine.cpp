@@ -1,9 +1,29 @@
 #include "CalcEngine.h"
 
+#include "lua.hpp"
+
 #include <stdexcept>
 #include <iostream>
 
 namespace ce {
+CalcEngine::CalcEngine() {
+    lua_State *L = luaL_newstate();
+
+    luaL_openlibs(L);
+
+    std::string luaCode = R"(
+    print("Hello world")
+    local name = "C++"
+    print("Hello, " .. name .. "!")
+    )";
+
+    if (luaL_dostring(L, luaCode.c_str()) != LUA_OK) {
+        std::cerr << "Error: Execution of lua code: " << lua_tostring(L, -1) << std::endl;
+    }
+
+    lua_close(L);
+}
+
 void CalcEngine::Reset() {
     result_.reset();
     currOp_.reset();

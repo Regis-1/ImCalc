@@ -7,6 +7,9 @@ project(
     VERSION 0.1
 )
 
+enable_language(CXX)
+enable_language(C)
+
 # find installed SDL3 library
 find_package(SDL3 REQUIRED)
 
@@ -25,6 +28,8 @@ target_include_directories(${PROJECT_NAME}
 # include found SDL3 library
 target_link_libraries(${PROJECT_NAME}
     PRIVATE SDL3::SDL3
+    PRIVATE imgui
+    PRIVATE lua
 )
 
 # include embedded libraries
