@@ -19,6 +19,7 @@ private:
 
     const ImVec2 numButtonSize_ = ImVec2(32.0f, 32.0f);
     const ImVec2 optButtonSize_ = ImVec2(25.0f, 25.0f);
+    const ImVec2 cfsButtonSize_ = ImVec2(30.0f, 25.0f);
     const ImVec2 pos_ = ImVec2(0.0f, 0.0f);
     const ImGuiWindowFlags flags_ = ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
@@ -29,3 +30,4 @@ private:
     bool isHolding_ = false;
     bool shouldClear_ = false;
 };
+

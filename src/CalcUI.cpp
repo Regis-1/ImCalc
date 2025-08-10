@@ -1,7 +1,5 @@
 #include "CalcUI.h"
 
-#include <iostream>
-
 void CalcUI::AddToDisplayText(const char c) {
     if (shouldClear_) {
         displayText_ = "0";
@@ -118,6 +116,21 @@ void CalcUI::Prepare(ImGuiIO &io) {
     }
     ImGui::EndGroup();
 
-    ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
+    ImGui::Separator();
+
+    ImGui::BeginGroup();
+    if (ImGui::Button("Cf1", cfsButtonSize_))
+        HandleOperation(ce::operations::CustomFunction1);
+    ImGui::SameLine();
+    if (ImGui::Button("Cf2", cfsButtonSize_))
+        HandleOperation(ce::operations::CustomFunction2);
+    ImGui::SameLine();
+    if (ImGui::Button("Cf3", cfsButtonSize_))
+        HandleOperation(ce::operations::CustomFunction3);
+    ImGui::SameLine();
+    if (ImGui::Button("Cf4", cfsButtonSize_))
+        HandleOperation(ce::operations::CustomFunction4);
+    ImGui::EndGroup();
+
     ImGui::End();
 }

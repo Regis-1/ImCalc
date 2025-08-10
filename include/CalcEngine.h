@@ -1,19 +1,5 @@
 #pragma once
 
-/*
- * Idea for scripting...
- *
- * function CustomF1(x, y)
- *  local tmp = 0;
- *  for y:
- *   tmp = tmp + x
- * end
- *
- * function CustomF2(x, y)
- *  MulFloats(x, DivFloats(y, 100))
- * end
- */
-
 #include <string>
 #include <memory>
 #include <optional>
@@ -41,5 +27,9 @@ namespace operations {
     float SubFloats(float x, float y);
     float MulFloats(float x, float y);
     float DivFloats(float x, float y);
+    float CustomFunction1(float x, float y);
+    float CustomFunction2(float x, float y);
+    float CustomFunction3(float x, float y);
+    float CustomFunction4(float x, float y);
 }
 }

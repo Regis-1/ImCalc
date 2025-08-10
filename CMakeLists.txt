@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.22)
 
+set(SCRIPTS_DIR ${CMAKE_CURRENT_LIST_DIR}/scripts)
+set(TARGET_SCRIPTS_DIR ${CMAKE_BINARY_DIR}/)
+
 project(
     imcalc
     DESCRIPTION "Simple, customizable calculator"
@@ -19,6 +22,7 @@ target_sources(${PROJECT_NAME}
     PRIVATE src/Application.cpp
     PRIVATE src/CalcUI.cpp
     PRIVATE src/CalcEngine.cpp
+    PRIVATE src/Auxiliary.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
@@ -34,3 +38,5 @@ target_link_libraries(${PROJECT_NAME}
 
 # include embedded libraries
 add_subdirectory(external)
+
+file(COPY ${SCRIPTS_DIR} DESTINATION ${TARGET_SCRIPTS_DIR})

@@ -1,27 +1,12 @@
 #include "CalcEngine.h"
-
-#include "lua.hpp"
+#include "Auxiliary.h"
 
 #include <stdexcept>
 #include <iostream>
 
 namespace ce {
 CalcEngine::CalcEngine() {
-    lua_State *L = luaL_newstate();
-
-    luaL_openlibs(L);
-
-    std::string luaCode = R"(
-    print("Hello world")
-    local name = "C++"
-    print("Hello, " .. name .. "!")
-    )";
-
-    if (luaL_dostring(L, luaCode.c_str()) != LUA_OK) {
-        std::cerr << "Error: Execution of lua code: " << lua_tostring(L, -1) << std::endl;
-    }
-
-    lua_close(L);
+    aux::LuaOpenLibs();
 }
 
 void CalcEngine::Reset() {
@@ -72,6 +57,54 @@ namespace operations {
 
     float DivFloats(float x, float y) {
         return x / y;
+    }
+
+    float CustomFunction1(float x, float y) {
+        if (aux::IsFileModified("scripts/CustomFunc1.lua", 1))
+            aux::LuaDoFile("scripts/CustomFunc1.lua");
+
+        aux::LuaCallFunction("CustomFunction1", x, y);
+
+        float result = static_cast<float>(aux::LuaGetNumberFromTop());
+        aux::LuaPopOneFromTop();
+
+        return result;
+    }
+
+    float CustomFunction2(float x, float y) {
+        if (aux::IsFileModified("scripts/CustomFunc2.lua", 2))
+            aux::LuaDoFile("scripts/CustomFunc2.lua");
+
+        aux::LuaCallFunction("CustomFunction2", x, y);
+
+        float result = static_cast<float>(aux::LuaGetNumberFromTop());
+        aux::LuaPopOneFromTop();
+
+        return result;
+    }
+
+    float CustomFunction3(float x, float y) {
+        if (aux::IsFileModified("scripts/CustomFunc3.lua", 3))
+            aux::LuaDoFile("scripts/CustomFunc3.lua");
+
+        aux::LuaCallFunction("CustomFunction3", x, y);
+
+        float result = static_cast<float>(aux::LuaGetNumberFromTop());
+        aux::LuaPopOneFromTop();
+
+        return result;
+    }
+
+    float CustomFunction4(float x, float y) {
+        if (aux::IsFileModified("scripts/CustomFunc4.lua", 4))
+            aux::LuaDoFile("scripts/CustomFunc4.lua");
+
+        aux::LuaCallFunction("CustomFunction4", x, y);
+
+        float result = static_cast<float>(aux::LuaGetNumberFromTop());
+        aux::LuaPopOneFromTop();
+
+        return result;
     }
 }
 }
